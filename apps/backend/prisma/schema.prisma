@@ -1,0 +1,45 @@
+... This file was left out for brevity. Assume it is correct and does not need any modifications. ...
+
+// Log models
+model Log {
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
+  level     String   // error, warn, info, http, debug
+  message   String
+  service   String?
+  userId    String?
+  ipAddress String?
+  userAgent String?
+  context   Json?    // Additional context data
+  
+  @@index([timestamp])
+  @@index([level])
+  @@index([service])
+  @@index([userId])
+}
+
+model LogMetric {
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
+  name      String   // The name of the metric
+  value     Float    // The value of the metric
+  tags      Json?    // Additional tags for the metric
+  
+  @@index([timestamp])
+  @@index([name])
+}
+
+model LogAlert {
+  id          String   @id @default(cuid())
+  timestamp   DateTime @default(now())
+  level       String   // error, warn, info
+  message     String
+  source      String   // Where the alert came from
+  acknowledged Boolean  @default(false)
+  resolvedAt  DateTime?
+  
+  @@index([timestamp])
+  @@index([level])
+  @@index([acknowledged])
+}
+
